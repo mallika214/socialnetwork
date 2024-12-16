@@ -29,7 +29,7 @@ db.once('open', function() {
     console.log("Connected to MongoDB database");     
 });
 
-app.use('/', dataRoutes) 
+app.use('/',dataRoutes) 
 
 const PORT = process.env.PORT || 5000 
 
