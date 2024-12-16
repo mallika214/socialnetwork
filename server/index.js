@@ -1,22 +1,38 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
+const express = require("express")
+const cors = require('cors');
+const mongoose = require("mongoose")
+const app = express()
+const dataRoutes = require("./routes/Routes")
+const bodyparser = require('body-parser')
+const path = require('path');
 
-dotenv.config();  // Load environment variables
 
-const app = express();
-const port = process.env.PORT || 3000;
+app.use(bodyparser.json());
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.log(err));
+app.use(cors({
+    origin: 'http://localhost:3000',  // Add both frontend URLs
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true,
+}));
 
-// Middleware to parse JSON requests
-app.use(express.json());
+//app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Routes
-const authRoutes = require('./routes/auth');
-app.use('/api/auth', authRoutes);
 
-app.listen(port, () => console.log(`Server running on port ${port}`));
+mongoose.connect("mongodb+srv://mallikaa0214:YfULALOhS8kaNHfR@socialnetwork.mze6o.mongodb.net/?retryWrites=true&w=majority&appName=SocialNetwork") ; 
+
+// password: YfULALOhS8kaNHfR
+
+const db = mongoose.connection;  
+
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));      
+db.once('open', function() { 
+    console.log("Connected to MongoDB database");     
+});
+
+app.use('/', dataRoutes) 
+
+const PORT = process.env.PORT || 5000 
+
+app.listen(PORT, () => { 
+    console.log("Server running on port: " + PORT)    
+}) 
