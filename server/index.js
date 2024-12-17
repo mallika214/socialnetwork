@@ -15,10 +15,10 @@ app.use(cors({
     credentials: true,
 }));
 
-//app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
-mongoose.connect("mongodb+srv://mallikaa0214:YfULALOhS8kaNHfR@socialnetwork.mze6o.mongodb.net/?retryWrites=true&w=majority&appName=SocialNetwork") ; 
+mongoose.connect("mongodb+srv://mallikaa0214:YfULALOhS8kaNHfR@socialnetwork.mze6o.mongodb.net/socialnetwork") ; 
 
 // password: YfULALOhS8kaNHfR
 
@@ -29,7 +29,7 @@ db.once('open', function() {
     console.log("Connected to MongoDB database");     
 });
 
-app.use('/', dataRoutes) 
+app.use('/',dataRoutes) 
 
 const PORT = process.env.PORT || 5000 
 
