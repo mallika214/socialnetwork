@@ -198,3 +198,44 @@ exports.deleteUser = async (req, res) => {
   }
 };
 
+exports.loginUser = async (req,res) => {
+    try {
+
+        const {email,password} = req.body;
+
+        //validate inputs
+        if(!email || !password){
+            return res.status(400).json({message: 'Email and Password is required'})
+        }
+
+        const user = await user.findOne({email});
+        if(!user){
+            return res.status(401).json({message: 'Invalid Email and Password'})
+        }
+
+        if(user.password != password){
+            return res.status(401).json({message: 'Invalid Email or Password'})
+        }
+
+        res.status(200).json({
+            message: 'user login is successful',
+            user: {
+                id: user._id,
+                username: user.username,
+                email: user.email,
+                bio: user.bio
+            }
+        }) ;
+
+    }//end of try 
+    catch(error){
+        //handle server errors
+        console.error('Login error:',error);
+        res.status(500).json({
+            message:'An error occured during login',
+            error: error.message
+
+        });
+    }
+
+};
