@@ -8,7 +8,10 @@ router.get('/getUser/:id' , userController.readUser);
 router.put('/updateUser/:id' , userController.updateUser);
 router.delete('/deleteUser/:id' , userController.deleteUser);
 
-router.post('/users/:user_id/posts', postController.createPost);
+router.post('/createPost/:user_id', postController.createPost);
+router.get('/getAllPosts', postController.getAllPosts);
+router.put('/updatePost/:id', postController.updatePostById);
+router.delete('/deletePost/:id', postController.deletePostById);
 
 
 
