@@ -239,3 +239,33 @@ exports.loginUser = async (req,res) => {
     }
 
 };
+
+exports.changePassword = async (req,res) => {
+    try{
+        const {id} = req.params;
+        const {oldpassword,newpassword} = req.body ;
+
+        if(!oldpassword || !newpassword){
+            req.status(401).json({message: 'Please enter old and new password'});
+        }
+
+        const {user} = User.findById(id) ;
+
+        if(!user){
+            req.status(404).json({message: 'user not found'});
+        }
+        if(user.password === oldpassword){
+            req.status(400).json({message: 'Password is incorrect'});
+        }
+         
+        user.password = newpassword;
+        await user.save();
+        req.status(200).json({message: 'Password updated successfully'});
+    }
+    catch(error){
+        res.status(500).json({
+            message: 'An error occurred',
+            error: error.message 
+        });
+    }
+};
